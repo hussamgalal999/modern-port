@@ -5,7 +5,16 @@ name: Penify - Revolutionizing Documentation on GitHub
 on:
   push:
     branches: ["main"]
+    # ⚡ Bolt: Avoid triggering documentation generation for non-code changes
+    paths-ignore:
+      - 'README.md'
+      - '.github/workflows/snorkell-auto-documentation.yml'
   workflow_dispatch:
+
+# ⚡ Bolt: Cancel in-progress runs for the same branch to save CI resources
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   Documentation:
