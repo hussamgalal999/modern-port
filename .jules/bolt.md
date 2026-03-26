@@ -1,0 +1,3 @@
+## 2024-03-26 - [CI Workflow Efficiency Optimization]
+**Learning:** In projects with automated documentation generators or other non-deployment CI tasks, triggering workflows on every push can lead to significant resource waste, especially when only documentation or meta-files are updated. Implementing `paths-ignore` and `concurrency` controls are essential "quick wins" for CI performance.
+**Action:** Always check GitHub Action workflows for redundant triggers and lack of concurrency control. Add `paths-ignore` for non-code files and `concurrency: cancel-in-progress: true` to optimize runner usage.
