@@ -5,11 +5,21 @@ name: Penify - Revolutionizing Documentation on GitHub
 on:
   push:
     branches: ["main"]
+    paths-ignore:
+      - 'README.md'
+      - '.github/workflows/**'
   workflow_dispatch:
+
+# Prevents redundant parallel runs on the same branch by cancelling in-progress runs
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   Documentation:
     runs-on: ubuntu-latest
+    # Added timeout to prevent hung processes from consuming resources indefinitely
+    timeout-minutes: 15
     steps:
     - name: Penify DocGen Client
       uses: SingularityX-ai/snorkell-documentation-client@v1.0.0
