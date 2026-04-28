@@ -5,11 +5,26 @@ name: Penify - Revolutionizing Documentation on GitHub
 on:
   push:
     branches: ["main"]
+    # ⚡ Optimization: paths-ignore prevents redundant triggers on non-code changes.
+    # Expected impact: Reduces CI runs by skipping triggers on README, workflows, and journal updates.
+    paths-ignore:
+      - 'README.md'
+      - '.github/workflows/**'
+      - '.jules/**'
   workflow_dispatch:
+
+# ⚡ Optimization: concurrency prevents overlapping runs on the same branch.
+# Expected impact: Saves GitHub Actions minutes by cancelling redundant in-progress builds.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   Documentation:
     runs-on: ubuntu-latest
+    # ⚡ Optimization: timeout-minutes prevents hung processes from wasting resources.
+    # Expected impact: Limits resource consumption if the documentation client hangs.
+    timeout-minutes: 10
     steps:
     - name: Penify DocGen Client
       uses: SingularityX-ai/snorkell-documentation-client@v1.0.0
