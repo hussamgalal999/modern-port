@@ -1,15 +1,28 @@
 # This workflow will improvise current file with AI genereated documentation and Create new PR
+# ⚡ Efficiency: Added path filtering and concurrency to save CI minutes.
 
 name: Penify - Revolutionizing Documentation on GitHub
 
 on:
   push:
     branches: ["main"]
+    # ⚡ Efficiency: Ignore documentation-only changes to prevent redundant runs.
+    paths-ignore:
+      - "README.md"
+      - ".github/workflows/**"
+      - ".jules/**"
   workflow_dispatch:
+
+# ⚡ Efficiency: Cancel redundant overlapping runs on the same branch.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   Documentation:
     runs-on: ubuntu-latest
+    # ⚡ Safety: Prevent hung processes from consuming excessive CI minutes.
+    timeout-minutes: 15
     steps:
     - name: Penify DocGen Client
       uses: SingularityX-ai/snorkell-documentation-client@v1.0.0
