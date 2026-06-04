@@ -2,13 +2,25 @@
 
 name: Penify - Revolutionizing Documentation on GitHub
 
+# ⚡ Efficiency boost: prevent multiple concurrent runs on the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches: ["main"]
+    # ⚡ Performance optimization: ignore non-code changes to reduce unnecessary runs
+    paths-ignore:
+      - 'README.md'
+      - '.github/workflows/**'
+      - '.jules/**'
   workflow_dispatch:
 
 jobs:
   Documentation:
+    # ⚡ Resource optimization: 15-minute timeout to prevent hung processes from wasting minutes
+    timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
     - name: Penify DocGen Client
