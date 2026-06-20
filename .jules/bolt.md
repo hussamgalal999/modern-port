@@ -1,0 +1,3 @@
+## 2024-06-20 - CI Efficiency Guards in Minimal Repositories
+**Learning:** In repositories with minimal or no application source code, GitHub Actions workflows are often the most significant source of resource consumption. Without path filtering and concurrency limits, these workflows can trigger unnecessarily on every small documentation or configuration change, wasting CI minutes and blocking development cycles.
+**Action:** When working in minimal repository architectures, prioritize adding `paths-ignore` for non-source files, `concurrency` groups to cancel redundant runs, and `timeout-minutes` to prevent hung jobs.
